@@ -78,33 +78,6 @@ namespace ns3{
       devices = waveHelper.Install(wifiPhy, qosWaveMacHelper, c);
   }
 
-  void installRSUWave(NodeContainer &c, NetDeviceContainer &devices) {
-      // Modulation and wifi channel bit rate
-      std::string phyMode ("OfdmRate6MbpsBW10MHz");
-      // std::string phyMode("OfdmRate24Mbps");
-      // Fix non-unicast data rate to be the same as that of unicast
-      Config::SetDefault("ns3::WifiRemoteStationManager::NonUnicastMode", StringValue(phyMode));
-
-      YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default();
-      // wifiPhy.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
-      wifiPhy.SetPcapDataLinkType (WifiPhyHelper::DLT_IEEE802_11);
-      wifiPhy.EnablePcap ("wave-simple-80211p", devices);
-      YansWifiChannelHelper wifiChannel;
-      wifiChannel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
-      // See this for why 500m is a good range file:///home/conor/Downloads/Roadside%20unit%20planning%20for%20the%20urban%20VN.pdf
-      wifiChannel.AddPropagationLoss("ns3::RangePropagationLossModel",
-                                     "MaxRange", DoubleValue(500.0));
-
-      wifiPhy.SetChannel(wifiChannel.Create());
-      Wifi80211pHelper waveHelper = Wifi80211pHelper::Default();
-      waveHelper.SetRemoteStationManager ("ns3::ConstantRateWifiManager",
-                                        "DataMode",StringValue (phyMode),
-                                        "ControlMode",StringValue (phyMode));
-
-      QosWaveMacHelper qosWaveMacHelper = QosWaveMacHelper::Default();
-      devices = waveHelper.Install(wifiPhy, qosWaveMacHelper, c);
-  }
-
   void installNDN(NodeContainer &c) {
       ndn::StackHelper ndnHelper;
       ndnHelper.SetDefaultRoutes(true);
@@ -310,6 +283,8 @@ namespace ns3{
       NodeContainer rsus;
       for (int i = nodeCount; i < nodeCount + rsuCount; i++) {
           rsus.Add(c.Get(i));
+          // Config::Set("/NodeList/i/DeviceList/i/$ns3::WifiNetDevice/Phy/$ns3::RangePropagationLossModel/MaxRange",
+          //             DoubleValue(450.0));
       }
       installProducer(rsus, true);
 
