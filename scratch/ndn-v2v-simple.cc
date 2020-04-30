@@ -44,6 +44,7 @@ namespace ns3{
   int contentTrigger_l_end = simulationEnd;
   int contentTrigger_x_speed = 0;
   double interestFrequency = 0.1;
+  double nodeTransmissionRange = 100;
   bool pcdMode = false;
   char infraMode = 'n';
 
@@ -66,7 +67,7 @@ namespace ns3{
       YansWifiChannelHelper wifiChannel;
       wifiChannel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
       wifiChannel.AddPropagationLoss("ns3::RangePropagationLossModel",
-                                     "MaxRange", DoubleValue(100.0));
+                                     "MaxRange", DoubleValue(nodeTransmissionRange));
 
       wifiPhy.SetChannel(wifiChannel.Create());
       Wifi80211pHelper waveHelper = Wifi80211pHelper::Default();
@@ -198,10 +199,10 @@ namespace ns3{
       NodeContainer proactiveProducers;
       // Producers and Consumers assigned based on the list of producerIds above
       for (int i = 0; i < nodeCount; i++) {
-          if (i > 0) {
+          if (i > -1) {
             //producers and consumers on the same nodes unfortunately produce unexpected results
             //have to resort to distributing producers uniformly across the network
-            if (i == 1 || (i % 3) == 0) {
+            if (i == 50) {
               producers.Add(c.Get(i));
               proactiveProducers.Add(c.Get(i));
             } else {
@@ -241,9 +242,9 @@ namespace ns3{
       NS_LOG_UNCOND("Installing ns2MobilityHelper...");
       ns2MobilityHelper.Install();
 
-      NS_LOG_UNCOND("Installing WAVE on all nodes...");
+      NS_LOG_UNCOND("Installing WAVE on all nodes (Transmission range of " << nodeTransmissionRange << ")...");
       installWave(c, netDevices);
-      NS_LOG_UNCOND("Installing NDN Stack on all Nodes...");
+      NS_LOG_UNCOND("Installing NDN Stack on all Nodes (PCD Mode =" << pcdMode << ")...");
       installNDN(c);
       NS_LOG_UNCOND("Assigning producers and consumers as needed (Interest Frequency of " << interestFrequency << ")...");
       installAppHelpers(c);
@@ -299,6 +300,7 @@ namespace ns3{
       cmd.AddValue("infra-mode", "Are RSUs present or not and at what density", infraMode);
       cmd.AddValue("pcd-mode", "Boolean value, decides if proactive producers are installed", pcdMode);
       cmd.AddValue("interest-freq", "Double value, sets the interests to be desemminated per second", interestFrequency);
+      cmd.AddValue("node-transmission-range", "Double value sets the max possible transmission range for nodes in the VANET", nodeTransmissionRange);
       cmd.AddValue("content-trigger-x-start", "Specifies where critical content becomes available in the simulation", contentTrigger_x_start);
       cmd.AddValue("content-trigger-x-end", "Specifies where critical content is no longer available in the simulation", contentTrigger_x_end);
       cmd.AddValue("content-trigger-x-speed", "Specifies the speed of the content if it is mobile", contentTrigger_x_speed);
@@ -312,8 +314,7 @@ namespace ns3{
       initialiseVanet();
       progressLogging();
 
-      AnimationInterface anim(animFile);
-      anim.SetMaxPktsPerTraceFile(50000000);
+
       std::string awarenessTraceOutput = traceOutput + "/awareness-trace.txt";
       std::remove(awarenessTraceOutput.c_str());
       std::ofstream awarenessTraceOutputFile(awarenessTraceOutput);

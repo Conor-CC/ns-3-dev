@@ -1,5 +1,6 @@
 import os
 interest_frequencies = ["0.1", "0.25", "0.5", "1.0"]
+node_transmission_ranges = ["100.0", "300.0"]
 vehicle_demmands = ["pcd-sparse", "pcd-mod", "pcd-dense"]
 test_configs = ["persistent-static", "persistent-mobile", "transient-static",
                 "transient-mobile"]
@@ -9,12 +10,12 @@ test_count = 0
 
 
 def runTestsForAllFrequeuncies(mode):
-    for f in interest_frequencies:
-        selectDemmands(f, mode)
+    for r in node_transmission_ranges:
+        selectDemmands(r, mode)
 
 
-def selectDemmands(interest_freq, mode):
-    results_dir = selectResultsDir(interest_freq)
+def selectDemmands(range, mode):
+    results_dir = selectResultsDir(range)
     for demmand in vehicle_demmands:
         content_level_commands = []
         dataDict = {}
@@ -27,10 +28,11 @@ def selectDemmands(interest_freq, mode):
         dataDict["dem_mode"] = selectDemMode(demmand)
         dataDict["demmand"] = demmand
         dataDict["results_dir"] = results_dir
-        dataDict["test_dir"] = selectTestDir(interest_freq)
+        dataDict["test_dir"] = selectTestDir(range)
+        dataDict["range"] = range
         dataDict["res_subdir"] = selectResultsSubdir(mode, demmand)
         dataDict["num_nodes"] = determineNumNodes(demmand)
-        dataDict["interest_freq"] = interest_freq
+        dataDict["interest_freq"] = "10.0"
         f_name = ("test-scripts/" + dataDict["test_dir"] + "/run-"
                   + dataDict["mode"] + "-" + dataDict["dem_mode"] + "-"
                   + dataDict["test_dir"] + ".sh")
@@ -107,15 +109,11 @@ def selectInfraKey(infra_str):
         return "d"
 
 
-def selectTestDir(f):
-    if f == interest_frequencies[0]:
-        return "freq_0_1"
-    if f == interest_frequencies[1]:
-        return "freq_0_25"
-    if f == interest_frequencies[2]:
-        return "freq_0_5"
-    if f == interest_frequencies[3]:
-        return "freq_1_0"
+def selectTestDir(r):
+    if r == node_transmission_ranges[0]:
+        return "range-100"
+    if r == node_transmission_ranges[1]:
+        return "range-300"
 
 
 def selectResultsSubdir(mode, demmand):
@@ -130,15 +128,11 @@ def selectResultsSubdir(mode, demmand):
     return mode_str + demmand_str
 
 
-def selectResultsDir(f):
-    if f == interest_frequencies[0]:
-        return os.environ.get('FYP_RESULTS_0_1')
-    if f == interest_frequencies[1]:
-        return os.environ.get('FYP_RESULTS_0_25')
-    if f == interest_frequencies[2]:
-        return os.environ.get('FYP_RESULTS_0_5')
-    if f == interest_frequencies[3]:
-        return os.environ.get('FYP_RESULTS_1_0')
+def selectResultsDir(r):
+    if r == node_transmission_ranges[0]:
+        return os.environ.get('FYP_RESULTS_100')
+    if r == node_transmission_ranges[1]:
+        return os.environ.get('FYP_RESULTS_300')
 
 
 def constructCmdString(dataDict):
@@ -149,10 +143,14 @@ def constructCmdString(dataDict):
             + "--interest-freq="
             + dataDict["interest_freq"]
             + " "
+            + "--node-transmission-range="
+            + dataDict["range"]
+            + " "
             + "--num-nodes="
             + dataDict["num_nodes"]
             + " "
-            + "--simulation-length=400 "
+            + "--simulation-length=200"
+            + " "
             + "--infra-mode="
             + dataDict["infra_key"]
             + " "
@@ -173,7 +171,8 @@ def constructCmdString(dataDict):
             + " "
             + "--trace-file=$SUMO_PROJECTS_ROOT/"
             + dataDict["demmand"]
-            + "/non-infra/ns2-trace.tcl "
+            + "/non-infra/ns2-trace.tcl"
+            + " "
             + "--anim-file="
             + dataDict["results_dir"]
             + "/"
@@ -182,7 +181,8 @@ def constructCmdString(dataDict):
             + dataDict["test_config"]
             + "/"
             + dataDict["infra_mode"]
-            + "/ndn-v2v-test.xml "
+            + "/ndn-v2v-test.xml"
+            + " "
             + "--trace-output="
             + dataDict["results_dir"]
             + "/"
@@ -199,7 +199,7 @@ def constructPrintString(dataDict):
             + dataDict["pcd_descr"]
             + " and "
             + dataDict["test_config"]
-            + " content and an interest frequency of "
+            + " content and an transmission range of "
             + dataDict["test_dir"]
             + ". ("
             + dataDict["infra_mode"]

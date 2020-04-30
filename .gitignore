@@ -40,6 +40,7 @@ build/
 
 *.pyc
 .waf*
+src/*
 src/NDNabstraction
 build/
 doc/html/
