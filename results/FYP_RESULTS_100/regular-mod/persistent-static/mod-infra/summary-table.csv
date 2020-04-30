@@ -1,0 +1,2 @@
+TotalKb,TotalPackets,InSatisfiedInterests,OutSatisfiedInterests,TotalNodes,TotalConsumers,TotalProducers,AverageAwarenessDistance,MinimumAwarenessDistance,MaximumAwarenessDistance,TotalInformed,TotalInformedBefore,TotalSafelyInformed,TotalInformedAfter
+4346504.98498341,14618112.1979583,161.999999999981,69.9999999999854,112,72,40,774.472222222222,22,1047,72,72,67,0

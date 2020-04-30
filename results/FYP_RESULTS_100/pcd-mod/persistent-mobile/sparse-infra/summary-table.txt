@@ -1,0 +1,2 @@
+TotalKb	TotalPackets	InSatisfiedInterests	OutSatisfiedInterests	TotalNodes	TotalConsumers	TotalProducers	AverageAwarenessDistance	MinimumAwarenessDistance	MaximumAwarenessDistance	TotalInformed	TotalInformedBefore	TotalSafelyInformed	TotalInformedAfter
+5726610.67497599	19323951.9375035	52.9342719918068	27.9119359957399	111	72	39	301.527777777778	0	957	41	72	36	0

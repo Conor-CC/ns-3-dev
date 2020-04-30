@@ -1,0 +1,26 @@
+[1] "/home/conor/Desktop/Desktop/named-data/results/FYP_RESULTS_100/regular-dense/transient-static/sparse-infra"
+[1] "/home/conor/Desktop/Desktop/named-data/results/FYP_RESULTS_100/regular-dense/transient-static/sparse-infra/analysis-output.txt"
+[1] "/home/conor/Desktop/Desktop/named-data/results/FYP_RESULTS_100/regular-dense/transient-static/sparse-infra/awareness-trace.txt"
+[1] "/home/conor/Desktop/Desktop/named-data/results/FYP_RESULTS_100/regular-dense/transient-static/sparse-infra/Rplots.pdf"
+[1] "/home/conor/Desktop/Desktop/named-data/results/FYP_RESULTS_100/regular-dense/transient-static/sparse-infra/summary-table.txt"
+[1] "/home/conor/Desktop/Desktop/named-data/results/FYP_RESULTS_100/regular-dense/transient-static/sparse-infra/summary-table.csv"
+
+L3RateTracer Results
+========================================
+Total Kilobits: [1] 6860718
+Total Packets [1] 22994411
+Total InSatisfiedInterests [1] 373.6624
+Total OutSatisfiedInterests [1] 207.7914
+Total Nodes [1] 166
+Total Consumers [1] 109
+Total Producers [1] 109
+
+AwarenessTraceOutput Results (For Consumers)
+========================================
+Average Awareness Distance: [1] 865.2385
+Minimum AwarenessDistance [1] -946
+Maximum AwarenessDistance [1] 1047
+Sum of Nodes that were informed [1] 107
+Sum of Nodes informed before content [1] 107
+Sum of Nodes that were safely informed [1] 104
+Sum of Nodes informed after content [1] 2

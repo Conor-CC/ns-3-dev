@@ -1,0 +1,14 @@
+NodeId  AwarenessDistance  WasInformed  AwarenessTime  SafelyInformed
+2  49  1  84  0
+4  84  1  84  0
+5  348  1  84  1
+7  427  1  84  1
+8  444  1  84  1
+10  582  1  84  1
+11  621  1  84  1
+13  665  1  84  1
+14  771  1  84  1
+16  920  1  84  1
+17  943  1  84  1
+19  1046  1  84  1
+20  1047  1  84  1
